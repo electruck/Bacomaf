@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flenbacom — Seed Pitch Memo</title>
+<style>
+  /* Premium CSS Variables */
+  :root {
+    --bg-color: #f8fafc;
+    --surface: #ffffff;
+    --text-main: #0f172a;
+    --text-muted: #475569;
+    --primary: #0ea5e9; /* Tech Blue */
+    --energy: #10b981; /* Green Energy */
+    --energy-light: #d1fae5;
+    --border: #e2e8f0;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --radius: 12px;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+    --font-serif: 'Merriweather', 'Charter', Georgia, serif;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Glassmorphism Navigation */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  .nav-inner {
+    max-width: 1000px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 24px;
+  }
+  .nav-brand {
+    font-family: var(--font-mono); font-size: 14px;
+    letter-spacing: 0.1em; text-transform: uppercase; font-weight: 800;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .nav-brand::before {
+    content: ''; display: inline-block; width: 8px; height: 8px;
+    background: var(--energy); border-radius: 50%;
+    box-shadow: 0 0 10px var(--energy);
+  }
+  .nav-meta {
+    font-family: var(--font-mono); font-size: 11px;
+    color: #94a3b8; letter-spacing: 0.05em;
+  }
+  .nav-ask {
+    font-family: var(--font-mono); font-size: 13px; font-weight: 700;
+    color: var(--energy); background: rgba(16, 185, 129, 0.1);
+    padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.2);
+  }
+
+  /* Reading Progress Bar */
+  .progress-container { width: 100%; height: 3px; background: transparent; }
+  .progress-bar { height: 3px; background: var(--energy); width: 0%; transition: width 0.1s; }
+
+  /* Container */
+  .wrap { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+
+  /* Hero with Grid Pattern */
+  .hero {
+    padding: 80px 0 60px;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: 
+      linear-gradient(to right, rgba(14, 165, 233, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(14, 165, 233, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: -1;
+    mask-image: radial-gradient(circle at center, black, transparent 80%);
+    -webkit-mask-image: radial-gradient(circle at center, black, transparent 80%);
+  }
+  .hero h1 {
+    font-family: var(--font-serif); font-size: 48px; line-height: 1.15;
+    margin: 0 0 24px; color: var(--text-main); letter-spacing: -0.03em;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-family: var(--font-mono); font-size: 12px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--primary); font-weight: 700; margin-bottom: 20px;
+    background: #e0f2fe; padding: 4px 12px; border-radius: 4px;
+  }
+  .hero-lede {
+    font-size: 20px; line-height: 1.6; color: var(--text-muted);
+    max-width: 800px; margin-bottom: 40px;
+  }
+  .hero-lede strong { color: var(--text-main); }
+  
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 24px;
+    padding-top: 32px; border-top: 1px solid var(--border);
+  }
+  .stat-card {
+    background: var(--surface); padding: 20px;
+    border-radius: var(--radius); border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm); transition: var(--transition);
+  }
+  .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--primary); }
+  .stat-label {
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-muted); font-weight: 700; margin-bottom: 8px;
+  }
+  .stat-value {
+    font-size: 28px; font-weight: 800; color: var(--primary);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-value .small { font-size: 0.5em; color: var(--text-muted); font-weight: 600; }
+
+  /* Sections & Typography */
+  section { 
+    padding: 60px 0; border-bottom: 1px solid var(--border);
+    /* Scroll Reveal Initial State */
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+  section.visible { opacity: 1; transform: translateY(0); }
+  section:last-of-type { border-bottom: none; }
+  
+  .section-num {
+    font-family: var(--font-mono); font-size: 12px;
+    letter-spacing: 0.15em; color: var(--primary);
+    font-weight: 700; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-num::before { content: ''; width: 24px; height: 2px; background: var(--primary); }
+  
+  h2 { font-family: var(--font-serif); font-size: 32px; line-height: 1.25; margin: 0 0 20px; letter-spacing: -0.02em; }
+  h3 { font-size: 20px; margin: 32px 0 12px; color: var(--text-main); font-weight: 700; }
+  p { margin: 0 0 16px; color: var(--text-muted); }
+  p strong { color: var(--text-main); }
+
+  /* Premium Problem Cards */
+  .problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; margin-top: 24px; }
+  .problem-card {
+    background: var(--surface); padding: 24px;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    border-left: 4px solid var(--danger);
+    box-shadow: var(--shadow-sm); transition: var(--transition);
+  }
+  .problem-card.bank { border-left-color: var(--warning); }
+  .problem-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+  .problem-card h4 {
+    margin: 0 0 8px; font-size: 14px; font-family: var(--font-mono);
+    letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-muted);
+  }
+  .problem-card .stat { font-size: 24px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; }
+  .problem-card p { font-size: 14px; margin: 0; }
+
+  /* Stack Diagram (The Solution) */
+  .stack-diagram {
+    margin: 32px 0; background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow-lg); overflow: hidden;
+  }
+  .stack-layer {
+    padding: 24px; border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: 120px 1fr 200px; gap: 24px; align-items: center;
+    transition: background 0.3s;
+  }
+  .stack-layer:hover { background: #f8fafc; }
+  .stack-layer:last-child { border-bottom: none; }
+  .stack-label {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-muted); font-weight: 700;
+  }
+  .stack-name { font-weight: 800; font-size: 18px; color: var(--text-main); margin-bottom: 4px; }
+  .stack-desc { color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+  .stack-value {
+    text-align: right; background: var(--bg-color); padding: 16px;
+    border-radius: 8px; border: 1px solid var(--border);
+  }
+  .stack-value span { display: block; font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;}
+  .stack-value strong { color: var(--energy); font-weight: 800; font-size: 14px; }
+
+  /* Interactive Tables */
+  .table-container { overflow-x: auto; margin: 24px 0; border-radius: var(--radius); box-shadow: var(--shadow-md); border: 1px solid var(--border); }
+  table.revenue { width: 100%; border-collapse: collapse; background: var(--surface); min-width: 600px; }
+  table.revenue th, table.revenue td { padding: 16px 20px; border-bottom: 1px solid var(--border); text-align: left; font-size: 14px; }
+  table.revenue thead th {
+    background: #f1f5f9; font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); font-weight: 700;
+  }
+  table.revenue tbody tr:hover { background: #f8fafc; }
+  table.revenue tbody tr:last-child td { border-bottom: none; }
+  table.revenue td.num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; font-family: var(--font-mono); }
+  table.revenue td.amt { color: var(--energy); font-weight: 800; }
+  table.revenue tfoot td { background: #f1f5f9; font-weight: 800; color: var(--text-main); border-top: 2px solid var(--border); }
+
+  /* Moat List */
+  .moat-list { list-style: none; margin: 24px 0; display: grid; gap: 16px; }
+  .moat-list li {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 20px 24px; border-radius: var(--radius);
+    border-left: 4px solid var(--primary);
+    box-shadow: var(--shadow-sm); transition: var(--transition);
+  }
+  .moat-list li:hover { transform: translateX(5px); box-shadow: var(--shadow-md); }
+  .moat-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--primary); font-weight: 800; margin-bottom: 6px; text-transform: uppercase; }
+  .moat-name { font-weight: 800; font-size: 16px; color: var(--text-main); margin-bottom: 8px; }
+
+  /* Founder & Funds Grid */
+  .founder { background: var(--surface); padding: 32px; border: 1px solid var(--border); border-radius: var(--radius); margin: 24px 0; box-shadow: var(--shadow-md); }
+  .founder-name { font-size: 22px; font-weight: 800; margin-bottom: 8px; font-family: var(--font-serif); }
+  .founder-tagline { font-family: var(--font-mono); font-size: 12px; color: var(--primary); font-weight: 700; margin-bottom: 24px; background: #e0f2fe; display: inline-block; padding: 6px 12px; border-radius: 4px; }
+  
+  .funds-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; margin: 20px 0; }
+  .funds-grid-row {
+    background: var(--surface); padding: 16px 20px;
+    border: 1px solid var(--border); border-radius: 8px;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: var(--transition);
+  }
+  .funds-grid-row:hover { border-color: var(--primary); background: #f8fafc; }
+  .funds-grid-row .funds-pct { font-family: var(--font-mono); font-size: 14px; font-weight: 800; color: var(--primary); }
+
+  /* Final CTA */
+  .cta {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: white; padding: 48px 40px; border-radius: 16px;
+    margin: 60px 0; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+    position: relative; overflow: hidden;
+  }
+  .cta::after {
+    content: ''; position: absolute; top: -50%; right: -50%; width: 100%; height: 200%;
+    background: radial-gradient(circle, rgba(16,185,129,0.15) 0%, transparent 60%);
+    transform: rotate(45deg); pointer-events: none;
+  }
+  .cta-label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--energy); font-weight: 800; margin-bottom: 16px; }
+  .cta-headline { font-family: var(--font-serif); font-size: 32px; line-height: 1.2; margin: 0 0 32px; }
+  .cta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1); margin-bottom: 32px; }
+  .cta-stat-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #94a3b8; margin-bottom: 8px; }
+  .cta-stat-value { font-size: 24px; font-weight: 800; color: white; }
+  .cta-contact { padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 14px; color: #cbd5e1; }
+  .cta-contact strong { color: white; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 36px; }
+    .stack-layer { grid-template-columns: 1fr; gap: 12px; }
+    .stack-value { text-align: left; background: transparent; padding: 0; border: none; }
+    .cta-grid { grid-template-columns: 1fr; gap: 16px; }
+    .nav-meta { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">Flenbacom</div>
+    <div class="nav-meta">v1.1 · Vertrouwelijk · 15 mei 2026</div>
+    <div class="nav-ask">€750k · 16% Equity</div>
+  </div>
+  <div class="progress-container">
+    <div class="progress-bar" id="myBar"></div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero" style="opacity: 1; transform: translateY(0);"> <div class="hero-tag">Fleet Energy Balance & Congestion Management</div>
+    <h1>De onafhankelijke energie-orchestrator tussen grootbanken, transportvloten en netbeheerders.</h1>
+    <div class="hero-lede">
+      Europese transporteurs moeten voor 2030 **meer dan 50.000 heavy-duty vrachtwagens elektrificeren**. Banken willen deze miljardendeals dolgraag lease-financieren, maar missen de **technische grip op netcongestie en energie-onbalans**. Flenbacom automatiseert de volledige cyclus: wij transformeren logistieke e-vloten in intelligente, net-balancerende energie-assets en maken contracten direct <em>bankable</em>.
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-label">Anchor Partner</div>
+        <div class="stat-value">Mainfreight</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Marktomvang EU</div>
+        <div class="stat-value">€280<span class="small">B</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Eerste Assetwaarde</div>
+        <div class="stat-value">€20<span class="small">M</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Seed-Ronde</div>
+        <div class="stat-value">€750<span class="small">k</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-num">01 · Het Probleem</div>
+    <h2>Het kapitaal is er, de e-trucks rijden. Maar netcongestie en energie-onbalans houden de markt in een wurggreep.</h2>
+    <p>Sinds de invoering van de CO2-vrachtwagenheffing in Duitsland en de naderende kilometerheffing in Nederland betalen diesel-trucks de hoofdprijs. De commerciële urgentie om te elektrificeren is gigantisch, maar de transportsector stuit op de harde wetten van de energiemarkt. <strong>Flenbacom lost de zes fundamentele energie-blokkades op:</strong></p>
+
+    <h3 style="margin-top: 32px;">Blok 1 — De economische en fysieke infrastructuur kraakt</h3>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <h4>Publiek snelladen verliest van diesel</h4>
+        <div class="stat">€0,46 vs €0,22/kWh</div>
+        <p>Snellaadtarieven maken stroom duurder dan diesel. Depot-laden is cruciaal voor de businesscase via onze software.</p>
+      </div>
+      <div class="problem-card">
+        <h4>Transmissienet overbelast (Elia, TenneT)</h4>
+        <div class="stat">Netstabiliteit gevaar</div>
+        <p>Ongestuurde vloten verhogen het risico op extreme onbalanstarieven (tot €200/MWh) exponentieel.</p>
+      </div>
+      <div class="problem-card">
+        <h4>Distributienet zit potdicht</h4>
+        <div class="stat">Wachttijden 2032+</div>
+        <p>Regionale netbeheerders kampen met wachtlijsten. Grote transporteurs kunnen hier niet op wachten.</p>
+      </div>
+      <div class="problem-card">
+        <h4>Energieleveranciers missen de schakel</h4>
+        <div class="stat">Versnipperde BRP's</div>
+        <p>Geen enkele traditionele leverancier biedt een dedicated e-truck propositie met live flex-markt toegang.</p>
+      </div>
+      <div class="problem-card">
+        <h4>Harde transportgrens (GTV-E)</h4>
+        <div class="stat">Aansluitingslimiet</div>
+        <p>E-trucks moeten binnen het huidige contract passen. Alleen actieve congestie-sturing voorkomt boetes.</p>
+      </div>
+      <div class="problem-card">
+        <h4>Batterijparken verplichte CAPEX</h4>
+        <div class="stat">€1M - €3M extra</div>
+        <p>Lokale batterij-buffering is nodig, maar transporteurs missen de software om deze rendabel te exploiteren.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-num">02 · De Architectuur</div>
+    <h2>Een vier-lagig netwerkplatform dat netcongestie omzet in rendement.</h2>
+    <p>Flenbacom bouwt de ontbrekende intelligente datalaag tussen de transportvloot en het elektriciteitsnet. De verdedigbaarheid (moat) zit in de integratie van deze vier lagen:</p>
+
+    <div class="stack-diagram">
+      <div class="stack-layer">
+        <div class="stack-label">Laag 1<br>Software</div>
+        <div>
+          <div class="stack-name">Flenbacom AI TCO- & Congestie-Engine</div>
+          <div class="stack-desc">Live netcapaciteit-checks, batterijdegradatie-scans en automatische subsidie-inventarisatie in minuten i.p.v. maanden.</div>
+        </div>
+        <div class="stack-value"><span>Verdienmodel</span><strong>SaaS (€1k-2k/mnd)</strong></div>
+      </div>
+      <div class="stack-layer">
+        <div class="stack-label">Laag 2<br>Financiering</div>
+        <div>
+          <div class="stack-name">Bank-Verified Deal Origination</div>
+          <div class="stack-desc">Grootbanken integreren hun risicomodellen. Cases rollen er direct uit als goedgekeurde lease-offertes.</div>
+        </div>
+        <div class="stack-value"><span>Verdienmodel</span><strong>Origination Fee (1.5%)</strong></div>
+      </div>
+      <div class="stack-layer">
+        <div class="stack-label">Laag 3<br>Lease-Marge</div>
+        <div>
+          <div class="stack-name">Recurring Revenue Share</div>
+          <div class="stack-desc">De leasebank deelt een percentage van de marge met Flenbacom vanwege het weggenomen technische risico.</div>
+        </div>
+        <div class="stack-value"><span>Verdienmodel</span><strong>5-15% Share (7-10jr)</strong></div>
+      </div>
+      <div class="stack-layer">
+        <div class="stack-label">Laag 4<br>Energie</div>
+        <div>
+          <div class="stack-name">Virtual Power Plant (VPP)</div>
+          <div class="stack-desc">Wij acteren als Flexibility Service Provider (FSP). Stilstaande trucks worden renderende flex-assets.</div>
+        </div>
+        <div class="stack-value"><span>Verdienmodel</span><strong>FSP-Fees & Marges</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-num">03 · Verdedigbaarheid (Moats)</div>
+    <h2>Waarom een concurrent met LLM's ons niet zomaar inhaalt.</h2>
+    <ul class="moat-list">
+      <li>
+        <div class="moat-num">Moat 01</div>
+        <div class="moat-name">Gereguleerde FSP-licenties & API-Koppelingen</div>
+        <p>Integratie met datahubs (Atrias/MFF) vergt zware security-audits. Dit is geen 'wrapper', maar kritieke grid-infrastructuur.</p>
+      </li>
+      <li>
+        <div class="moat-num">Moat 02</div>
+        <div class="moat-name">Het Ground-Truth Data Vliegwiel</div>
+        <p>Exclusieve, reële data over laadprofielen, batterijdegradatie en congestiepatronen maakt onze voorspellingsmodellen superieur.</p>
+      </li>
+      <li>
+        <div class="moat-num">Moat 03</div>
+        <div class="moat-name">Asymmetrische distributie & Sector-credibility</div>
+        <p>Directe C-level ingangen bij spelers zoals Mainfreight (80-truck pilot) openen deuren die voor pure software-startups gesloten blijven.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="section-num">04 · Financieel Model</div>
+    <h2>Directe transactiewaarde gekoppeld aan 10-jarige ARR.</h2>
+    <div class="table-container">
+      <table class="revenue">
+        <thead>
+          <tr>
+            <th>Inkomstenstroom</th>
+            <th>Type</th>
+            <th class="num">Gem. per Deal</th>
+            <th class="num">Jaar 1</th>
+            <th class="num">Jaar 3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Software-Subscriptions</td>
+            <td>Recurring SaaS</td>
+            <td class="num">€18.000 / jr</td>
+            <td class="num amt">€90k</td>
+            <td class="num amt">€1.8M</td>
+          </tr>
+          <tr>
+            <td>Origination Fee (Banken)</td>
+            <td>Transactiefee</td>
+            <td class="num">€150.000</td>
+            <td class="num amt">€300k</td>
+            <td class="num amt">€4.5M</td>
+          </tr>
+          <tr>
+            <td>Bank Revenue-Share</td>
+            <td>Recurring (7-10j)</td>
+            <td class="num">€40.000 / jr</td>
+            <td class="num amt">€80k</td>
+            <td class="num amt">€2.5M</td>
+          </tr>
+          <tr>
+            <td>VPP Flex-Marges</td>
+            <td>Energie-Marge</td>
+            <td class="num">€30.000 / jr</td>
+            <td class="num amt">€40k</td>
+            <td class="num amt">€1.2M</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3">Totale Jaaromzet</td>
+            <td class="num amt">€605.000</td>
+            <td class="num amt">€11.750.000</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-num">05 · De Investeringsvraag</div>
+    <h2>Seed-ronde van €750k tegen 16% equity. 18 maanden runway.</h2>
+    <div class="funds-grid">
+      <div class="funds-grid-row"><span class="funds-desc">Salaris Core Team</span><span class="funds-pct">18%</span></div>
+      <div class="funds-grid-row"><span class="funds-desc">Senior Full-Stack & Grid Dev</span><span class="funds-pct">24%</span></div>
+      <div class="funds-grid-row"><span class="funds-desc">Commercieel / Sales Hire</span><span class="funds-pct">18%</span></div>
+      <div class="funds-grid-row"><span class="funds-desc">API Integratie-koppelingen</span><span class="funds-pct">12%</span></div>
+      <div class="funds-grid-row"><span class="funds-desc">FSP-Licenties & Audits</span><span class="funds-pct">8%</span></div>
+      <div class="funds-grid-row"><span class="funds-desc">Cloud Infra & VPP Engine</span><span class="funds-pct">6%</span></div>
+      <div class="funds-grid-row"><span class="funds-desc">Marketing & Events</span><span class="funds-pct">6%</span></div>
+      <div class="funds-grid-row"><span class="funds-desc">Onvoorziene Buffer</span><span class="funds-pct">8%</span></div>
+    </div>
+  </section>
+
+  <div class="cta">
+    <div class="cta-label">Volgende Stap</div>
+    <div class="cta-headline">Plan een 15-minuten introductie-call om de Flenbacom VPP-architectuur live te zien.</div>
+    <div class="cta-grid">
+      <div>
+        <div class="cta-stat-label">Investerings-tickets</div>
+        <div class="cta-stat-value">€50k - €500k</div>
+      </div>
+      <div>
+        <div class="cta-stat-label">Runway</div>
+        <div class="cta-stat-value">18 Maanden</div>
+      </div>
+      <div>
+        <div class="cta-stat-label">Eerste VPP Pilot</div>
+        <div class="cta-stat-value">Q3 2026</div>
+      </div>
+    </div>
+    <div class="cta-contact">
+      <strong>Contact:</strong> [Naam] · [E-mail] · [Telefoon]<br><br>
+      <em>Op aanvraag beschikbaar: De technische blauwdruk van het Flenbacom Virtual Power Plant model.</em>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  // 1. Reading Progress Bar
+  window.addEventListener('scroll', () => {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    document.getElementById("myBar").style.width = scrolled + "%";
+  });
+
+  // 2. Scroll Reveal Animation for Sections
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.15
+  };
+
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target); // Stop observing once visible
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('section').forEach(sec => {
+    // Skip the hero section if we want it immediately visible
+    if (!sec.classList.contains('hero')) {
+      observer.observe(sec);
+    }
+  });
+</script>
+
+</body>
+</html>
