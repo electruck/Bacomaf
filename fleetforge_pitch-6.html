@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FleetForge — Seed Pitch</title>
+<style>
+  :root {
+    --bg: #f5f4f0;
+    --white: #ffffff;
+    --ink: #0a1628;
+    --ink-2: #1e3a5f;
+    --ink-3: #4a6584;
+    --line: #d8d3c8;
+    --line-soft: #e8e4d8;
+    --green: #1e7a3c;
+    --green-bg: #e8f5ec;
+    --gold: #b8860b;
+    --gold-bg: #fef5e0;
+    --red: #b41e1e;
+    --red-bg: #fbeaea;
+    --accent: #1e4d6b;
+    --sans: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+    --mono: 'SF Mono', Menlo, Consolas, monospace;
+    --serif: 'Charter', 'Iowan Old Style', Georgia, serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--sans); font-size: 15px; line-height: 1.55;
+  }
+
+  /* Sticky top */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--ink); color: white;
+    padding: 12px 20px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.1);
+  }
+  .nav-inner {
+    max-width: 920px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 16px;
+  }
+  .nav-brand {
+    font-family: var(--mono); font-size: 12px;
+    letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700;
+  }
+  .nav-meta {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.08em; color: rgba(255,255,255,0.6);
+  }
+  .nav-ask {
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    color: #b3e5c7; letter-spacing: 0.06em;
+  }
+
+  /* Container */
+  .wrap { max-width: 920px; margin: 0 auto; padding: 0 20px; }
+
+  /* Hero */
+  .hero {
+    padding: 56px 0 40px;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: 44px; line-height: 1.1; margin: 0 0 18px;
+    color: var(--ink); letter-spacing: -0.02em;
+  }
+  .hero-tag {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); font-weight: 700; margin-bottom: 18px;
+  }
+  .hero-lede {
+    font-size: 19px; line-height: 1.55; color: var(--ink-2);
+    max-width: 720px; margin-bottom: 24px;
+  }
+  .hero-lede strong { color: var(--ink); }
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
+    padding-top: 24px; border-top: 1px solid var(--line-soft);
+  }
+  .hero-stat-label {
+    font-family: var(--mono); font-size: 9px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 700; margin-bottom: 4px;
+  }
+  .hero-stat-value {
+    font-size: 24px; font-weight: 700; color: var(--ink);
+    letter-spacing: -0.01em; line-height: 1;
+  }
+  .hero-stat-value .small { font-size: 0.6em; color: var(--ink-3); }
+
+  /* Section */
+  section { padding: 48px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: none; }
+  .section-num {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.15em; color: var(--ink-3);
+    font-weight: 700; margin-bottom: 8px;
+  }
+  h2 {
+    font-family: var(--serif); font-size: 30px;
+    line-height: 1.2; margin: 0 0 14px; color: var(--ink);
+    letter-spacing: -0.015em;
+  }
+  h3 {
+    font-size: 17px; margin: 24px 0 8px;
+    color: var(--ink); font-weight: 700;
+  }
+  p { margin: 0 0 14px; color: var(--ink-2); }
+  p strong { color: var(--ink); }
+
+  /* Three-layer diagram */
+  .stack-diagram {
+    margin: 24px 0;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+  }
+  .stack-layer {
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--line);
+    display: grid; grid-template-columns: 100px 1fr 220px; gap: 18px;
+    align-items: center;
+  }
+  .stack-layer:last-child { border-bottom: none; }
+  .stack-label {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 700;
+  }
+  .stack-name { font-weight: 700; font-size: 16px; color: var(--ink); }
+  .stack-desc { color: var(--ink-2); font-size: 13.5px; margin-top: 2px; line-height: 1.5; }
+  .stack-value {
+    text-align: right;
+    font-family: var(--mono); font-size: 11px;
+    color: var(--ink-3); letter-spacing: 0.04em;
+  }
+  .stack-value strong { color: var(--green); font-weight: 700; font-size: 13px; display: block; margin-top: 2px; }
+  .stack-layer.layer-ai { background: linear-gradient(to right, white, #f5f9fc); }
+  .stack-layer.layer-bank { background: linear-gradient(to right, white, var(--gold-bg)); }
+  .stack-layer.layer-fleet { background: linear-gradient(to right, white, var(--green-bg)); }
+
+  /* Problem cards */
+  .problem-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    margin-top: 18px;
+  }
+  .problem-card {
+    background: white; padding: 18px 20px;
+    border: 1px solid var(--line); border-left: 3px solid var(--red);
+    border-radius: 4px;
+  }
+  .problem-card.bank { border-left-color: var(--accent); }
+  .problem-card h4 {
+    margin: 0 0 6px; font-size: 13px;
+    font-family: var(--mono); letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-3);
+  }
+  .problem-card .stat {
+    font-size: 22px; font-weight: 700; color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .problem-card p { font-size: 13px; margin: 6px 0 0; line-height: 1.5; }
+
+  /* Revenue table */
+  table.revenue {
+    width: 100%; border-collapse: collapse; background: white;
+    border: 1px solid var(--line); margin: 18px 0;
+  }
+  table.revenue th, table.revenue td {
+    padding: 11px 14px; border: 1px solid var(--line-soft);
+    text-align: left; font-size: 13.5px;
+  }
+  table.revenue thead th {
+    background: #f7f5f0; font-family: var(--mono);
+    font-size: 10px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-3); font-weight: 700;
+  }
+  table.revenue td.num {
+    text-align: right; font-variant-numeric: tabular-nums;
+    font-weight: 600;
+  }
+  table.revenue td.amt { color: var(--green); font-weight: 700; }
+  table.revenue tfoot td {
+    background: #f7f5f0; font-weight: 700; color: var(--ink);
+  }
+  table.revenue tfoot td.amt { color: var(--green); font-size: 15px; }
+
+  /* Moat list */
+  .moat-list {
+    list-style: none; padding: 0; margin: 18px 0;
+  }
+  .moat-list li {
+    background: white; border: 1px solid var(--line);
+    padding: 14px 18px; margin-bottom: 8px;
+    border-radius: 4px; border-left: 3px solid var(--green);
+  }
+  .moat-list .moat-num {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.1em; color: var(--green);
+    font-weight: 700; margin-bottom: 4px;
+  }
+  .moat-list .moat-name { font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+  .moat-list p { font-size: 13.5px; margin: 0; line-height: 1.55; }
+
+  /* Founder card */
+  .founder {
+    background: white; padding: 22px 24px;
+    border: 1px solid var(--line); border-radius: 6px;
+    margin: 18px 0;
+  }
+  .founder-name { font-size: 19px; font-weight: 700; margin-bottom: 4px; color: var(--ink); }
+  .founder-tagline {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.06em; color: var(--ink-3);
+    text-transform: uppercase; font-weight: 700; margin-bottom: 16px;
+  }
+  .founder-stack {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  }
+  .founder-row {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: 13px;
+  }
+  .founder-row:last-child { border-bottom: none; }
+  .founder-row strong {
+    display: block; font-size: 11px;
+    font-family: var(--mono); letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--ink-3);
+    margin-bottom: 2px; font-weight: 700;
+  }
+
+  /* Roadmap */
+  .roadmap {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 12px; margin: 18px 0;
+  }
+  .roadmap-step {
+    background: white; padding: 16px 18px;
+    border: 1px solid var(--line); border-radius: 4px;
+  }
+  .roadmap-q {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.1em; color: var(--accent);
+    font-weight: 700; margin-bottom: 6px;
+  }
+  .roadmap-title { font-weight: 700; font-size: 13.5px; margin-bottom: 6px; color: var(--ink); }
+  .roadmap-detail { font-size: 12.5px; color: var(--ink-3); line-height: 1.55; }
+
+  /* Use of funds */
+  .funds-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+    margin: 14px 0;
+  }
+  .funds-row {
+    background: white; padding: 12px 16px;
+    border: 1px solid var(--line); border-radius: 4px;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .funds-row .funds-pct {
+    font-family: var(--mono); font-size: 14px;
+    font-weight: 700; color: var(--accent);
+  }
+  .funds-row .funds-desc { font-size: 13px; color: var(--ink-2); }
+
+  /* Final CTA */
+  .cta {
+    background: var(--ink); color: white;
+    padding: 36px 30px; border-radius: 6px;
+    margin: 30px 0 50px;
+  }
+  .cta-label {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: rgba(255,255,255,0.5); font-weight: 700; margin-bottom: 14px;
+  }
+  .cta-headline {
+    font-family: var(--serif); font-size: 28px;
+    line-height: 1.2; margin: 0 0 16px;
+    letter-spacing: -0.01em;
+  }
+  .cta-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;
+    padding-top: 22px; border-top: 1px solid rgba(255,255,255,0.15);
+    margin-top: 20px;
+  }
+  .cta-stat-label {
+    font-family: var(--mono); font-size: 9px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.55); margin-bottom: 6px; font-weight: 700;
+  }
+  .cta-stat-value {
+    font-size: 22px; font-weight: 700; color: #b3e5c7;
+  }
+  .cta-contact {
+    margin-top: 22px; padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    font-size: 13px; color: rgba(255,255,255,0.7);
+  }
+  .cta-contact strong { color: white; }
+
+  /* Mobile */
+  @media (max-width: 720px) {
+    body { font-size: 14px; }
+    .hero { padding: 36px 0 28px; }
+    .hero h1 { font-size: 30px; }
+    .hero-lede { font-size: 16px; }
+    .hero-stats { grid-template-columns: 1fr 1fr; gap: 14px; }
+    .hero-stat-value { font-size: 19px; }
+    section { padding: 32px 0; }
+    h2 { font-size: 22px; }
+    .stack-layer { grid-template-columns: 1fr; gap: 8px; }
+    .stack-value { text-align: left; }
+    .problem-grid { grid-template-columns: 1fr; }
+    .founder-stack { grid-template-columns: 1fr; }
+    .roadmap { grid-template-columns: 1fr 1fr; }
+    .funds-grid { grid-template-columns: 1fr; }
+    .cta-grid { grid-template-columns: 1fr; gap: 14px; }
+    .cta-headline { font-size: 21px; }
+    .nav-meta { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- STICKY NAV -->
+<div class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">FleetForge · Seed Pitch</div>
+    <div class="nav-meta">v0.1 · vertrouwelijk · 15 mei 2026</div>
+    <div class="nav-ask">€750k · 16% equity</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">Transport elektrificatie · AI orchestrator</div>
+    <h1>De orchestrator tussen transporteurs, banken, netbeheerders en de elektrische truck-revolutie.</h1>
+    <div class="hero-lede">
+      Europese transporteurs moeten <strong>50.000+ trucks elektrificeren</strong> voor 2030. Banken willen die deals leasing-financieren maar missen <strong>de TCO-expertise</strong>. Netbeheerders (Fluvius, Stedin, Elia, TenneT) hebben <strong>geen geaggregeerde flex-partner</strong> om netcongestie te verlichten. Transport-CFO's verzuipen in <strong>6-18 maanden financiële analyse</strong>. FleetForge automatiseert de hele cyclus — van business case tot bankable lease-contract tot DSO-flexcontract — in dagen in plaats van maanden.
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-label">Anchor klant</div>
+        <div class="hero-stat-value">Mainfreight</div>
+      </div>
+      <div>
+        <div class="hero-stat-label">Markt EU</div>
+        <div class="hero-stat-value">€280<span class="small">B</span></div>
+      </div>
+      <div>
+        <div class="hero-stat-label">Eerste deal-waarde</div>
+        <div class="hero-stat-value">€20<span class="small">M CAPEX</span></div>
+      </div>
+      <div>
+        <div class="hero-stat-label">Seed-ronde</div>
+        <div class="hero-stat-value">€750<span class="small">k</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. PROBLEEM -->
+  <section>
+    <div class="section-num">01 · Het probleem</div>
+    <h2>De technologie bestaat. Het geld bestaat. Maar de infrastructuur, financiering en coördinatie zitten muurvast.</h2>
+    <p>Vanaf <strong>augustus 2026</strong> stijgt de wegenheffing in Nederland en Duitsland fors voor diesel-trucks, terwijl zero-emission trucks gratis blijven tot 2031. EU AFIR verplicht infrastructuur-uitbouw, EU AFIF stelt €3B+ subsidies beschikbaar. <strong>De urgentie is maximaal — maar zes elkaar versterkende blokkades houden de markt vast.</strong></p>
+
+    <h3 style="margin-top: 24px;">Blok 1 — De economische én fysieke infrastructuur kraakt</h3>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <h4>Publiek laden is niet competitief met diesel</h4>
+        <div class="stat">€0,46/kWh vs €0,22/kWh</div>
+        <p>Milence-tarief in BE vanaf jan 2026: €0,379/kWh excl. BTW (€0,459 incl.) — duurder dan diesel-equivalent op km-basis (€0,50/km vs €0,45/km). Depot-laden kost €0,22/kWh. <strong>De business case voor e-trucks staat of valt met depot-laden.</strong> Langeafstand-routes zonder depot-mogelijkheid worden economisch onhaalbaar. CFO's die alleen TCO-tabellen krijgen zonder laad-strategie zijn verloren.</p>
+      </div>
+      <div class="problem-card">
+        <h4>TSO's overbelast (Elia, TenneT)</h4>
+        <div class="stat">Adequacy onder druk</div>
+        <p>Elia (BE) en TenneT (NL) beheren het transmissienet en moeten 24/7 evenwicht houden tussen injectie en afname. Elia's "Adequacy & Flexibility 2026-2036 studie" benoemt onbalans-risico's expliciet. Onbalanstarief kan tot €200/MWh oplopen bij structurele systeem-onbalans. Een nieuwe stroom-intensieve sector (e-trucks) zonder aggregatie maakt het probleem groter.</p>
+      </div>
+      <div class="problem-card">
+        <h4>DSO's volledig vol (Fluvius, Stedin)</h4>
+        <div class="stat">Uitbreidingen 2032-2035</div>
+        <p>Distributienetbeheerders (BE: Fluvius / Wallonië: ORES, RESA / Brussel: Sibelga / NL: Stedin, Liander, Enexis) versterken hun netten, maar opleveringen voor heavy-duty industriële aansluitingen pas 2032-2035. Wachtlijsten boven 3×80A. <strong>Een e-truck vloot kan niet wachten.</strong></p>
+      </div>
+      <div class="problem-card">
+        <h4>Energieleveranciers + BRP's missen schakel</h4>
+        <div class="stat">~30 BRP's BE</div>
+        <p>Elke netgebruiker MOET een Balance Responsible Party hebben (Elia-vereiste). Energieleveranciers (Engie, Luminus, TotalEnergies, Eneco) zijn typisch hun eigen BRP. <strong>Maar geen enkele leverancier biedt vandaag een dedicated truck-elektrificatie aanbod</strong> met aangepaste tariefstructuur, smart-charging integratie, en gestroomlijnde toegang tot flex-markt. Het is allemaal stuk en versnipperd.</p>
+      </div>
+      <div class="problem-card">
+        <h4>Flex-markt nog versnipperd</h4>
+        <div class="stat">FSP-rol onderbenut</div>
+        <p>Elia heeft FSP-rol gecreëerd (Flexibility Service Provider) — wie flex-vermogen aggregeert kan rechtstreeks Elia bedienen. Fluvius lanceerde "Marktgids Flexibiliteit 3.0" in januari 2026. Datahub bestaat sinds 2018 voor flex-afrekening. <strong>Maar bijna geen FSP focust op transport.</strong> Smart-charging op duizend trucks = massieve onontgonnen flex-pool. Geen enkele speler aggregeert dit.</p>
+      </div>
+      <div class="problem-card">
+        <h4>Wachtlijsten + Aansluit-grens (GTV-E)</h4>
+        <div class="stat">3×80A grootverbruik</div>
+        <p>Bestaande klanten boven 3×80A worden geweigerd voor extra vermogen — al hun nieuwe e-trucks moeten passen binnen het bestaande gecontracteerde transportvermogen (GTV-E). Overschrijden = mogelijke afsluiting + schade. Nieuwe aanvragen op wachtlijst zonder garantie op timing. Maatschappelijke prioriteit mogelijk maar enkel voor wie congestie kan verlichten.</p>
+      </div>
+      <div class="problem-card">
+        <h4>MCS-uitrol staat in de kinderschoenen</h4>
+        <div class="stat">33 hubs in 8 landen</div>
+        <p>Milence target 284 MCS-punten in EU tegen 2027 — vandaag (april 2026) operationeel slechts 33 hubs. In BE: 1 locatie (Antwerpen-Brugge). De realisatie hangt af van netaansluitingen die er niet zijn, plus Milence-tarieven die operationeel verlies opleveren tegen diesel.</p>
+      </div>
+      <div class="problem-card">
+        <h4>Batterijparken + hoogspanning</h4>
+        <div class="stat">€1-3M extra CAPEX</div>
+        <p>Een MCS-locatie of high-volume depot vereist middenspanning-aansluiting, custom transformatoren en geavanceerd energiebeheer. Battery-buffering (NL SPULA/SPRILA-regelingen erkennen dit) wordt steeds vaker verplicht om piekbelasting te beheersen. Vergunningen, brandweer, ATEX, financiering — niemand heeft een geïntegreerd model.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 24px;">Blok 2 — Markt-concentratie creëert nieuw risico voor de EU</h3>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <h4>Milence eigendomsstructuur</h4>
+        <div class="stat">3 fabrikanten · 1 platform</div>
+        <p>Milence is een joint venture van <strong>Daimler Truck + Traton (MAN + Scania) + Volvo Group</strong>. Deze drie spelers controleren samen meer dan 60% van de Europese truck-markt én bouwen nu het belangrijkste publieke laadnetwerk. <strong>De infrastructuur-toegang is in handen van de truck-verkopers zelf.</strong></p>
+      </div>
+      <div class="problem-card">
+        <h4>Truck-kartel 1997-2011</h4>
+        <div class="stat">€3,8 miljard EU-boetes</div>
+        <p>Dezelfde fabrikanten (MAN, Daimler, Volvo, Scania, plus DAF en Iveco) werden door de Europese Commissie veroordeeld voor 14 jaar prijs-collusie en het <strong>opzettelijk vertragen van emissie-technologie</strong>. MAN ontsnapte aan €1,2B boete door als eerste te bekennen (whistle-blower). Scania betaalde €880M, Daimler €1B, DAF €753M, Volvo €670M. Bron: EU Commission, sept 2017.</p>
+      </div>
+      <div class="problem-card">
+        <h4>Volkswagen dieselgate</h4>
+        <div class="stat">€22,6 miljard penalty</div>
+        <p>MAN en Scania zijn volledig eigendom van Volkswagen Group (via Traton SE) sinds 2012/2014. Volkswagen pleitte schuldig aan jarenlange diesel-emissie fraude (TDI-motoren) met wereldwijde boetes van €22,6 miljard. Dezelfde concerngroep controleert nu een derde van de EU MCS-laadinfra via Milence.</p>
+      </div>
+      <div class="problem-card">
+        <h4>EU mag dit niet herhalen</h4>
+        <div class="stat">Innovatie-window</div>
+        <p>EU-Commissaris Vestager zei in 2017: "De truck-fabrikanten hadden moeten concurreren op milieu-verbetering, niet samenspannen." Hetzelfde risico bestaat nu voor laadinfra. EU AFIF-subsidies (€3B+) gaan voor een groot deel naar dezelfde concernen die de markt eerder manipuleerden. <strong>Innovatieve, onafhankelijke spelers verdienen voorrang</strong> om macht over laadinfra te decentraliseren.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 24px;">Blok 3 — De drie partijen kunnen elkaar niet vinden</h3>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <h4>Transporteur-CFO's</h4>
+        <div class="stat">6-18 maanden</div>
+        <p>Per investerings-beslissing aan TCO-analyse, sensitivity scenarios, financiering-vergelijking. CFO's hebben niet de tijd én niet de gespecialiseerde EV-truck kennis (batterij-degradatie, restwaarde, laad-strategieën, netcongestie-risico). Beslissingen worden uitgesteld of suboptimaal genomen.</p>
+      </div>
+      <div class="problem-card bank">
+        <h4>Banken / leasing-arms</h4>
+        <div class="stat">Géén deal-flow</div>
+        <p>BNP Paribas Fortis Leasing, Belfius, ING Lease willen groene transport-financiering bouwen maar hebben geen TCO-modellen, geen origination-kanaal, en geen interne expertise in EV-truck restwaarde, batterij-degradatie, of laadinfra-risico. Ze kijken toe terwijl de transitie aan hen voorbijgaat.</p>
+      </div>
+      <div class="problem-card">
+        <h4>Truck-fabrikanten</h4>
+        <div class="stat">Stuck pre-sales</div>
+        <p>Volvo, DAF, MAN, Windrose verkopen e-trucks aan financieel-onzekere klanten zonder laadinfra-zekerheid. Sales-cycles van 12-24 maanden. Conversion rates onder 20% door financiële én infrastructuur-complexiteit — niet door technische bezwaren aan het product zelf.</p>
+      </div>
+      <div class="problem-card bank">
+        <h4>EU-subsidies + nationale steun</h4>
+        <div class="stat">€3B+ ongebruikt</div>
+        <p>AFIF, CEF-T, VLAIO, AanZET, SPULA, SPRILA, ESCALAR — miljarden subsidies voor groene transport-infrastructuur worden onderbenut omdat aanvraagdossiers complex zijn, deadlines streng, en geen enkele partij integraal overzicht heeft. Transporteurs missen geld dat letterlijk op tafel ligt.</p>
+      </div>
+    </div>
+
+    <p style="margin-top: 18px;"><strong>De vertraging is geen technologie-probleem. Het is een orchestratie-probleem dat ook diepe infrastructuur-strategie én markt-onafhankelijkheid vereist.</strong> Trucks bestaan. Banken bestaan. Subsidies bestaan. MCS-standaard bestaat. Battery-parks zijn technisch klaar. Maar geen enkele speler verbindt deze lagen tot één bankable, uitvoerbaar pakket per transporteur — én bijna alle bestaande infra-spelers (Milence) zijn eigendom van dezelfde truck-fabrikanten die de markt eerder manipuleerden.</p>
+    <p>FleetForge is <strong>onafhankelijk van OEM-belangen</strong>: we adviseren puur op transporteur-rendement en banken-zekerheid. We orkestreren tussen alle truck-merken, alle banken, alle laadinfra-spelers (Milence, Fastned, Allego, depot-installaties). <strong>Geen verticale integratie, geen verborgen belangen.</strong></p>
+    <p><strong>FleetForge is het eerlijke, geïntegreerde, onafhankelijke pakket dat de EU-elektrificatie nodig heeft.</strong></p>
+  </section>
+
+  <!-- 2. OPLOSSING -->
+  <section>
+    <div class="section-num">02 · De oplossing</div>
+    <h2>FleetForge is geen tool. Het is een vijf-lagig netwerk dat het complete elektriciteit-ecosysteem verbindt.</h2>
+    <p>We bouwen het ontbrekende coördinatie-platform tussen transporteurs, banken, infrastructuur-spelers, <strong>distributie-netbeheerders (DSO's)</strong> én de bovenliggende energiemarkt (TSO, leveranciers, BRP's). Elke laag heeft zijn eigen waarde, maar de echte moat zit in het netwerk-effect tussen alle vijf — én in onze ingebouwde infrastructuur-engine die netcongestie, MCS-beschikbaarheid, battery-buffering en flex-vergoedingen meeneemt in elke business case.</p>
+
+    <div class="stack-diagram">
+      <div class="stack-layer layer-ai">
+        <div class="stack-label">Laag 1<br>Software</div>
+        <div>
+          <div class="stack-name">AI-gedreven business case + infrastructuur-engine</div>
+          <div class="stack-desc">Per transporteur: TCO-analyse, ROI-scenario's, cashflow-projecties, EU-subsidie inventarisatie én een infrastructuur-readiness check — inclusief depot-laad strategie (welke routes wel/niet rendabel met e-truck, hoeveel laadpunten nodig, GTV-E aansluit-capaciteit, MCS-nabijheid voor uitzonderingen, battery-buffer berekening, PV-integratie potentieel, congestiemanagement-vergoeding mogelijkheid). Direct geïntegreerd met Fluvius/Elia (BE) en Stedin/Liander/TenneT (NL) data over capaciteit per netregio. Wat een sales-engineer in 40-80 uur doet, doen wij in minuten — en eerlijk, niet promotioneel.</div>
+        </div>
+        <div class="stack-value">Revenue<strong>Subscription €1-2k/mnd</strong></div>
+      </div>
+      <div class="stack-layer layer-bank">
+        <div class="stack-label">Laag 2<br>Banken</div>
+        <div>
+          <div class="stack-name">Bank-verified deal origination</div>
+          <div class="stack-desc">1-3 exclusieve banken (BNP Paribas Fortis, Belfius, ING) verifiëren cijfers, sluiten leasing-contracten af voor trucks én voor laadinfrastructuur én voor battery-parks waar nodig. Hun stempel maakt deals onmiddellijk bankable. Transporteur krijgt zekerheid, bank krijgt deal-flow.</div>
+        </div>
+        <div class="stack-value">Revenue<strong>Origination 0,5-1,5%</strong></div>
+      </div>
+      <div class="stack-layer layer-fleet">
+        <div class="stack-label">Laag 3<br>Lease-revenue</div>
+        <div>
+          <div class="stack-name">Recurring revenue share op alle assets</div>
+          <div class="stack-desc">Bank deelt 5-15% van zijn lease-marge met FleetForge over hele contractduur (typisch 7-10 jaar). Niet alleen trucks: ook laadinfra, MCS-stations, en battery-parks vallen in scope. Zolang assets actief zijn, betaalt de deal. Multi-jaar voorspelbaar inkomen per gesloten deal.</div>
+        </div>
+        <div class="stack-value">Revenue<strong>5-15% lease-marge × 7-10j</strong></div>
+      </div>
+      <div class="stack-layer" style="background: linear-gradient(to right, white, #ddeefb);">
+        <div class="stack-label">Laag 4<br>Distributie<br>(DSO)</div>
+        <div>
+          <div class="stack-name">Flex-orchestratie met de regionale distributie-netbeheerders</div>
+          <div class="stack-desc">De DSO's beheren het regionale net waar elke truck-laadpaal op aansluit: <strong>Fluvius (BE-Vlaanderen), ORES + RESA + Sibelga (BE-Wallonië/Brussel), Stedin (NL-west), Liander (NL-noord/oost), Enexis (NL-zuid)</strong>. Zij beslissen over GTV-E capaciteit, wachtlijsten, congestiemanagement-vergoedingen, en maatschappelijke prioriteit. FleetForge levert hen wat ze vandaag missen: voorspelbare flex uit honderden truck-laders, reservatie-data dagen vooruit, en een betrouwbare aggregator-partner. In ruil: voorrang op de wachtlijst voor onze klanten + flex-vergoedingen.</div>
+        </div>
+        <div class="stack-value">Revenue<strong>Flex-share + voorrang</strong></div>
+      </div>
+      <div class="stack-layer" style="background: linear-gradient(to right, white, #e8f0d8);">
+        <div class="stack-label">Laag 5<br>Markt<br>(TSO + BRP)</div>
+        <div>
+          <div class="stack-name">Aggregator richting transmissie + energiemarkt</div>
+          <div class="stack-desc">Boven de DSO's: <strong>TSO's (Elia in BE, TenneT in NL/DE)</strong> beheren het hoogspanningsnet en de balans. <strong>Energieleveranciers (Engie, Luminus, TotalEnergies, Eneco, Vattenfall)</strong> en <strong>BRP's</strong> handelen op de day-ahead + intraday + onbalansmarkten. FleetForge treedt op als FSP (Flexibility Service Provider) richting Elia, en kan truck-flex verkopen als day-ahead arbitrage of intraday balancing. Bij wind-overschot 's nachts wordt laden gratis of zelfs betaald — die marge vangen we. Plus PPA-bemiddeling voor depots met groot laad-volume.</div>
+        </div>
+        <div class="stack-value">Revenue<strong>FSP-fees + arbitrage-marge</strong></div>
+      </div>
+      </div>
+    </div>
+
+    <p><strong>Voor de transporteur:</strong> geen CAPEX, maandlast lager dan diesel-TCO, geen risico op cijfers (bank heeft goedgekeurd), beslissing in dagen ipv 18 maanden, plus integrale infrastructuur-zekerheid (netaansluiting, MCS-toegang, eventueel battery-park) én extra inkomsten uit flex-vergoedingen aan TSO/DSO.</p>
+    <p><strong>Voor de bank:</strong> 5-10× meer deal-flow zonder eigen TCO-team, asset-gedekte lease op trucks én laadinfra als onderpand, complete deal-pakket inclusief subsidies, infrastructuur-validatie en toegang tot het elektriciteits-ecosysteem.</p>
+    <p><strong>Voor TSO's (Elia, TenneT):</strong> grootschalige geaggregeerde flex-pool die ze vandaag niet hebben. Smart-charging op duizend trucks = honderden MW stuurbare belasting voor frequentie-balancering en onbalans-correctie. Vermindert structurele onbalans-kosten en evenwichts-risico.</p>
+    <p><strong>Voor DSO's (Fluvius, Stedin, Liander, ORES, RESA, Sibelga, Enexis):</strong> de regionale distributie-netbeheerders krijgen vandaag duizenden losse netaansluit-aanvragen die ze niet kunnen bedienen door capaciteits-tekort. FleetForge biedt hen <strong>één geaggregeerde gesprekspartner</strong> die honderden laadpunten orchestreert met dagen-vooruit voorspelbaarheid, gestructureerd flex-aanbod onder Fase 1+2a congestiemanagement, en automatische respect voor GTV-E grenzen. <strong>Korter wachtlijsten, lagere uitbreidings-druk, voorspelbare leveringszekerheid.</strong></p>
+    <p><strong>Voor energieleveranciers + BRP's:</strong> nieuwe klant-categorie (e-truck vloten) met aangepaste tariefstructuur, gestroomlijnde portfolio-balancering, hogere klantretentie door geïntegreerd aanbod. FleetForge wordt natuurlijke distributiepartner.</p>
+    <p><strong>Voor FleetForge:</strong> vijf revenue-stromen op meerdere asset-klassen, asymmetrische moat (banken-relaties + DSO-data + TSO/FSP-licentie + infrastructuur-kennis), exponentiële data-flywheel.</p>
+  </section>
+
+  <!-- 3. STRATEGISCHE SLEUTEL -->
+  <section>
+    <div class="section-num">03 · De strategische sleutel</div>
+    <h2>TEN-T beveiligde parkings + nachtladen = de enige route die het stroomnet niet breekt.</h2>
+    <p>Het oplossen van de logistieke energietransitie zit niet in <strong>meer MCS-snellaad-pieken overdag</strong> — dat breekt het net definitief. De échte oplossing is het verschuiven van laden naar de <strong>9-11 uur wettelijke rustpauze 's nachts</strong>, op beveiligde TEN-T parkings die de EU verplicht uitrolt. FleetForge orchestreert deze categorie: de juiste truck, de juiste parking, het juiste nachttarief, de juiste battery-buffer.</p>
+
+    <h3 style="margin-top: 22px;">Het EU-kader is al gezet</h3>
+    <ul class="moat-list" style="margin-top: 10px;">
+      <li>
+        <div class="moat-num">EU TEN-T art 31(4)</div>
+        <div class="moat-name">Verplicht SSTPA-netwerk tegen 2040</div>
+        <p>Lidstaten moeten <strong>elke 150 km</strong> een Safe & Secure Truck Parking Area (SSTPA) leveren langs het TEN-T core network. AFIR-targets 2030: laadpool van 3,6 MW elke 60 km plus 4 charging points per SSTPA. CEF-T-subsidies financieren de uitrol. EU SSTPA-standaard sinds 2022 (4 niveaus, DEKRA-gecertificeerd).</p>
+      </li>
+      <li>
+        <div class="moat-num">ESPORG Green Parking 2026</div>
+        <div class="moat-name">Duurzaamheidslaag op SSTPA-norm</div>
+        <p>Februari-maart 2026 lanceerde ESPORG samen met DEKRA de Green Parking Standard — voegt expliciet laadinfra, battery-storage en V2G-capaciteit toe aan SSTPA-certificering. Eerste gecertificeerde parkings al operationeel (Bapaume A1, Eurotunnel, Smart Autohof). MACBETH-rapport benoemt dit als sector-benchmark. <strong>Het marktkader bestaat, maar de orchestratie ontbreekt.</strong></p>
+      </li>
+    </ul>
+
+    <h3 style="margin-top: 22px;">Hoe nachtladen drie netproblemen oplost</h3>
+    <div class="problem-grid">
+      <div class="problem-card bank">
+        <h4>1. Netcongestie</h4>
+        <div class="stat">50-150 kW · 9-11u</div>
+        <p>Bij wettelijke rustpauze hoeft niet ultrasnel geladen te worden. Een truck met 600 kWh batterij vult in 9 uur op met 70 kW — geen MCS-piek nodig. Dynamic Load Balancing spreidt 30 trucks over de nacht zonder piekbelasting. <strong>Wat MCS in 45 minuten doet, doet smart night-charging in 9 uur — met 10× minder netbelasting.</strong></p>
+      </div>
+      <div class="problem-card bank">
+        <h4>2. Overbelasting</h4>
+        <div class="stat">Parking als microgrid</div>
+        <p>Battery storage op de parking (1-5 MWh stationaire batterijen) laadt overdag op met hernieuwbare overschotten. 's Nachts trekken trucks stroom uit deze buffer — niet rechtstreeks uit het Elia/TenneT-net. <strong>Peak shaving</strong> houdt de netbelasting constant en laag, terwijl de DNB capaciteit overhoudt voor andere klanten.</p>
+      </div>
+      <div class="problem-card bank">
+        <h4>3. Onbalans + V2G</h4>
+        <div class="stat">500-600 kWh per truck</div>
+        <p>Een truck-batterij is een rijdende thuisbatterij. Bij wind-overschot (storm op de Noordzee, 02:00u) start het systeem het laden tegen bodemprijzen — helpt netfrequentie stabiel houden. Bij tekort kunnen trucks die laat vertrekken zelfs <strong>terugleveren tegen hoge vergoeding</strong> (V2G). Honderden truck-batterijen op een TEN-T-corridor = grootschalige flex-asset.</p>
+      </div>
+      <div class="problem-card bank">
+        <h4>4. Reservatie-data voor DNB</h4>
+        <div class="stat">Dagen vooruit voorspelbaar</div>
+        <p>Een chauffeur die parkeert reserveert vooraf — netbeheerder weet dagen voor levering precies hoeveel stroom nodig is, wanneer, waar. Onvoorspelbare piekvragen verdwijnen. Dit ontsluit <strong>capaciteit die de DNB anders moet reserveren als reserve</strong>. Voor Elia/Fluvius is een platform met deze reservatie-data direct waardevol.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 22px;">Wat FleetForge orchestreert</h3>
+    <p>SSTPA-operators bouwen parkings. Truck-OEMs bouwen voertuigen. Banken financieren. DNB's beheren het net. <strong>Maar geen enkele partij verbindt deze categorie in één bankable pakket per route per transporteur.</strong> FleetForge wel:</p>
+    <ul style="margin: 14px 0 0; padding-left: 20px;">
+      <li><strong>Route-engine:</strong> matcht elke vrachtbeweging met de dichtstbijzijnde SSTPA met laadinfra binnen rij-tijdgrens. Geen depot? Geen probleem — onze software vindt de juiste TEN-T parking op de juiste afstand met beschikbare laadplek.</li>
+      <li><strong>Tariefoptimalisatie:</strong> berekent per truck per nacht het optimale laadprofiel — wanneer laden tegen €0,08/kWh wind-overschot, wanneer wachten op tarief-dip, wanneer V2G-revenue genereren.</li>
+      <li><strong>Battery-buffer business case:</strong> per SSTPA-operator berekenen we of een 2 MWh batterij rendabel is, hoeveel subsidie er beschikbaar is, en hoe snel terugverdiend.</li>
+      <li><strong>DNB-flex contracting:</strong> we onderhandelen flex-vergoedingen met Fluvius/Elia/Stedin namens parking-operators én transporteurs — gestructureerde revenue tegenover congestiemanagement.</li>
+    </ul>
+    <p style="margin-top: 14px;"><strong>Resultaat:</strong> een transporteur die zonder eigen depot toch elektrisch rijdt, een SSTPA-operator die zijn green premium verzilvert, een bank die een nieuwe asset-klasse (parking-battery + truck-fleet) kan financieren, en een DNB die voorspelbare flex-capaciteit krijgt. <strong>FleetForge zit in het midden van elk geld-stroompje.</strong></p>
+  </section>
+
+  <!-- 4. MOAT -->
+  <section>
+    <div class="section-num">04 · Verdedigbaarheid in AI-tijdperk</div>
+    <h2>Waarom een concurrent met dezelfde LLM ons niet kopieert.</h2>
+    <p>De vraag die elke VC eerst stelt: <em>"Wat als OpenAI/Anthropic dit zelf bouwt? Of een goedkope concurrent uit Polen?"</em> Ons antwoord:</p>
+
+    <ul class="moat-list">
+      <li>
+        <div class="moat-num">Moat 01</div>
+        <div class="moat-name">Exclusieve banken-partnerships</div>
+        <p>Een nieuwe speler moet door 12-18 maanden compliance-evaluatie, juridische due diligence en partnership-onderhandelingen bij elke bank afzonderlijk. Met onze head start hebben we de leidende Belgische banken vergrendeld voordat concurrenten überhaupt benaderen.</p>
+      </li>
+      <li>
+        <div class="moat-num">Moat 02</div>
+        <div class="moat-name">Data-flywheel uit echte deals</div>
+        <p>Elke deal die door ons platform passeert genereert ground-truth data: welke aannames hielden stand, welke restwaarde-modellen waren correct, hoe CFO's beslissen. Na 50 deals hebben we een dataset die niemand anders heeft. Onze AI wordt structureel beter dan elke generieke LLM-implementatie.</p>
+      </li>
+      <li>
+        <div class="moat-num">Moat 03</div>
+        <div class="moat-name">Distributie via familie + sector-netwerk</div>
+        <p>De founder heeft een directe familie-link bij Mainfreight (400+ trucks Europa, 's-Heerenberg + Genk), plus een sector-netwerk via vorige rollen bij Katoen Natie en Iveco pre-sales. Cold outreach werkt niet in logistiek; warme intro's wel.</p>
+      </li>
+      <li>
+        <div class="moat-num">Moat 04</div>
+        <div class="moat-name">Switching costs door geïntegreerde workflows</div>
+        <p>Een transporteur die zijn TCO-modellen, banken-relaties en lease-contracten via ons platform draait, kan niet zonder maandenwerk overstappen. Banken hebben hun proces afgestemd. Switching costs voor zowel transporteur als bank.</p>
+      </li>
+      <li>
+        <div class="moat-num">Moat 05</div>
+        <div class="moat-name">Compliance & regelgeving als barrière</div>
+        <p>FSMA, KYC, leasing-licenties, EU-subsidie aanvraag-rechten — al deze regulatorische lagen vergen tijd om op te bouwen. Wij beginnen vandaag, concurrenten moeten 6-12 maanden inhalen.</p>
+      </li>
+      <li>
+        <div class="moat-num">Moat 06</div>
+        <div class="moat-name">OEM-onafhankelijkheid als trust-anchor</div>
+        <p>In een markt waar Milence (Daimler + Traton + Volvo joint venture) tegelijk truck-verkoper én laadinfra-operator is, vragen transporteurs en banken om een neutrale orchestrator. FleetForge heeft geen aandelen-belang in fabrikanten of laad-operators — onze adviezen zijn bewijsbaar onafhankelijk. Bij EU markt-toetsing en bank-due diligence weegt dit zwaar.</p>
+      </li>
+    </ul>
+
+    <p><strong>Conclusie:</strong> we bouwen geen kopieerbare tool. We bouwen een gereguleerd netwerk-platform met asymmetrische distributie. De LLM is de motor — niet het merk, niet de moat.</p>
+  </section>
+
+  <!-- 4. MARKT -->
+  <section>
+    <div class="section-num">05 · Markt en GTM</div>
+    <h2>Mainfreight als anchor. Daarna 200+ Europese transporteurs.</h2>
+
+    <h3>Totale Adresseerbare Markt</h3>
+    <p>EU-vrachtwagenpark: <strong>6,2 miljoen trucks</strong>. Doel-segment heavy-duty boven 7,5 ton: <strong>2,5 miljoen voertuigen</strong>. Bij 30% elektrificatie tegen 2035 = <strong>750.000 trucks</strong> × gemiddelde CAPEX €250k = <strong>€187 miljard markt</strong>. Bij 1% origination-fee + 10% revenue share = <strong>€280B totale lifetime value</strong> over de transitie-periode.</p>
+
+    <h3>Initiële focus</h3>
+    <p><strong>Vlaanderen + Nederland</strong> eerst — densiteit van transporteurs, regulatoire push, sterke banken-positie. Pas in jaar 2-3 uitbreiden naar Frankrijk en Duitsland. Geen Pan-Europese ambities vóór product-market fit.</p>
+
+    <h3>GTM via de drie partijen</h3>
+    <table class="revenue">
+      <thead>
+        <tr><th>Partij</th><th>Aanpak</th><th>Doel jaar 1</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Transporteurs</td>
+          <td>Mainfreight pilot → 5 logistieke top-30 in BE/NL (warm intro Frederik Gielis)</td>
+          <td>5 betalende klanten</td>
+        </tr>
+        <tr>
+          <td>Banken</td>
+          <td>Belfius + BNP Paribas Fortis Leasing exclusieve partnership BE</td>
+          <td>1-2 partnerships</td>
+        </tr>
+        <tr>
+          <td>Truck-fabrikanten</td>
+          <td>Volvo, DAF, MAN — onze platform brengt hen pre-validated leads</td>
+          <td>1 OEM partnership</td>
+        </tr>
+        <tr>
+          <td>EU-subsidie consulenten</td>
+          <td>VLAIO, AFIF-aanvragen via partner-netwerk</td>
+          <td>3-5 subsidie deals</td>
+        </tr>
+        <tr>
+          <td>Distributie-netbeheerders (DSO's)</td>
+          <td>Fluvius (BE-Vlaanderen) + Stedin (NL-west) + Liander (NL-noord/oost) + Enexis (NL-zuid) + ORES/RESA (BE-Wallonië) — congestiemanagement-contracten, GTV-E reservaties, maatschappelijke prioriteit op wachtlijst</td>
+          <td>1-2 DSO partnerships</td>
+        </tr>
+        <tr>
+          <td>Transmissie-netbeheerders (TSO's)</td>
+          <td>Elia (BE) + TenneT (NL/DE) — FSP-licentie aanvragen, flex-markt deelname (mFRR, aFRR), data-uitwisseling onbalans-prognose</td>
+          <td>1 TSO partnership + FSP-status</td>
+        </tr>
+        <tr>
+          <td>Energieleveranciers + BRP's</td>
+          <td>Engie, Luminus, TotalEnergies, Eneco — co-branded truck-elektrificatie aanbod, BRP-perimeter integratie</td>
+          <td>1-2 leverancier-partnerships</td>
+        </tr>
+        <tr>
+          <td>SSTPA-operators</td>
+          <td>ESPORG-leden langs BE/NL TEN-T corridors — Eurotunnel, On Turtle, EU Green Parking-gecertificeerde sites</td>
+          <td>2-3 parking-pilots</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 5. REVENUE -->
+  <section>
+    <div class="section-num">06 · Revenue model</div>
+    <h2>Acht revenue-stromen, één voorspelbare cashflow.</h2>
+    <p>Hybride structuur die zowel <strong>ARR voor VC-pitch</strong> als <strong>hoge contract-waarde voor unit economics</strong> levert. AI-kopieerbaarheid neutraliseert want pure SaaS-pricing is kwetsbaar geworden. Diversificatie over <strong>vijf stakeholder-categorieën</strong> (transporteur, bank, DSO, TSO/markt, SSTPA-operator) maakt FleetForge robuust tegen veranderingen in één segment.</p>
+
+    <table class="revenue">
+      <thead>
+        <tr>
+          <th>Revenue stream</th>
+          <th>Type</th>
+          <th class="num">Per deal</th>
+          <th class="num">Jaar 1</th>
+          <th class="num">Jaar 3</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Subscription transporteurs</td>
+          <td>Recurring SaaS</td>
+          <td class="num">€18k/jr</td>
+          <td class="num amt">€90k</td>
+          <td class="num amt">€1,8M</td>
+        </tr>
+        <tr>
+          <td>Origination fee per deal</td>
+          <td>Transactioneel</td>
+          <td class="num">€150-200k</td>
+          <td class="num amt">€300k</td>
+          <td class="num amt">€4,5M</td>
+        </tr>
+        <tr>
+          <td>Bank revenue-share lease</td>
+          <td>Recurring 7-jaar</td>
+          <td class="num">€40k/jr × 7j</td>
+          <td class="num amt">€80k</td>
+          <td class="num amt">€2,5M</td>
+        </tr>
+        <tr>
+          <td>EU-subsidie consulting</td>
+          <td>Project-fee</td>
+          <td class="num">€10-25k</td>
+          <td class="num amt">€60k</td>
+          <td class="num amt">€800k</td>
+        </tr>
+        <tr>
+          <td>DSO flex-share (Fluvius, Stedin, Liander...)</td>
+          <td>Recurring per vloot</td>
+          <td class="num">€15-25k/jr</td>
+          <td class="num amt">€25k</td>
+          <td class="num amt">€750k</td>
+        </tr>
+        <tr>
+          <td>TSO/BRP arbitrage + FSP-fees</td>
+          <td>Per-MWh marge</td>
+          <td class="num">€5-15k/jr</td>
+          <td class="num amt">€15k</td>
+          <td class="num amt">€450k</td>
+        </tr>
+        <tr>
+          <td>Energieleverancier referral + co-branding</td>
+          <td>Per-MWh marge</td>
+          <td class="num">€2-5/MWh</td>
+          <td class="num amt">€15k</td>
+          <td class="num amt">€450k</td>
+        </tr>
+        <tr>
+          <td>SSTPA + V2G arbitrage commissie</td>
+          <td>Per-kWh marge</td>
+          <td class="num">€0,02-0,05/kWh</td>
+          <td class="num amt">€20k</td>
+          <td class="num amt">€600k</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3"><strong>Totaal omzet</strong></td>
+          <td class="num amt">€605k</td>
+          <td class="num amt">€11,85M</td>
+        </tr>
+        <tr>
+          <td colspan="3">Waarvan recurring/voorspelbaar</td>
+          <td class="num">42%</td>
+          <td class="num">55%</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <p><strong>Aannames jaar 3:</strong> 100 actieve transporteurs op subscription, 30 gesloten deals per jaar, 80 lopende lease-contracten in revenue-share, 40 subsidie-projecten. Realistisch op basis van pilot-conversie en sector-tempo.</p>
+  </section>
+
+  <!-- 6. FOUNDER -->
+  <section>
+    <div class="section-num">07 · Founder</div>
+    <h2>Een zeldzame combinatie: elke laag van de truck-business zelf aangeraakt.</h2>
+
+    <div class="founder">
+      <div class="founder-name">[Founder Name] — Solo founder, eerste hire na seed</div>
+      <div class="founder-tagline">Master Transport & Logistiek · TEW · CE-rijbewijs · Logistiek IT · EV ervaring · Iveco pre-sales</div>
+
+      <div class="founder-stack">
+        <div class="founder-row">
+          <strong>Academisch fundament</strong>
+          Master Transport & Logistiek + Toegepaste Economische Wetenschappen — niet één van beide, beide.
+        </div>
+        <div class="founder-row">
+          <strong>Operationele credibility</strong>
+          CE-rijbewijs voor zware vrachtwagens + 3 maanden full-time container-ervaring. Kan zelf een truck demonstreren.
+        </div>
+        <div class="founder-row">
+          <strong>Logistieke IT</strong>
+          Software-rol bij Katoen Natie (top-3 Belgische logistieke speler). Kent complex IT-landschap van binnenuit.
+        </div>
+        <div class="founder-row">
+          <strong>EV-energie domein</strong>
+          Technical support bij SolarEdge in Bulgarije — zonne-omvormers, energie-conversie, EV-charging dynamics.
+        </div>
+        <div class="founder-row">
+          <strong>Truck pre-sales workflow</strong>
+          Iveco trucks pre-sales call center. Weet hoe truck-OEMs hun klanten bedienen en waar het sales-proces verzuipt.
+        </div>
+        <div class="founder-row">
+          <strong>Familie-warm intro Mainfreight</strong>
+          Neef Frederik Gielis bij Mainfreight Belgium — direct kanaal naar 80-truck pilot in Zwijnaarde.
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top: 18px;">Deze combinatie bestaat niet bij grote AI-bedrijven of logistieke incumbents. Het is exact het type founder dat een gefragmenteerde markt nodig heeft: <strong>iemand die zowel de truck als de spreadsheet als de banken-jargon begrijpt</strong>.</p>
+  </section>
+
+  <!-- 7. ROADMAP -->
+  <section>
+    <div class="section-num">08 · 18-maanden roadmap</div>
+    <h2>Mainfreight pilot in Q3 2026. Series A klaar in Q4 2027.</h2>
+
+    <div class="roadmap">
+      <div class="roadmap-step">
+        <div class="roadmap-q">Q3 2026</div>
+        <div class="roadmap-title">Pilot bij Mainfreight</div>
+        <div class="roadmap-detail">80-truck Zwijnaarde case afronden, 1e betaalde pilot via Frederik Gielis. Banken-LOI van BNP Paribas Fortis of Belfius.</div>
+      </div>
+      <div class="roadmap-step">
+        <div class="roadmap-q">Q4 2026</div>
+        <div class="roadmap-title">Eerste gesloten deal</div>
+        <div class="roadmap-detail">Lease-contract Mainfreight via partner-bank ondertekend. Origination-fee + revenue-share start. €200-300k omzet.</div>
+      </div>
+      <div class="roadmap-step">
+        <div class="roadmap-q">Q1-Q2 2027</div>
+        <div class="roadmap-title">5 betalende klanten</div>
+        <div class="roadmap-detail">H.Essers, Ahlers, Katoen Natie, één Nederlandse top-30 logistieke speler. ARR €150k recurring + €500k transactioneel.</div>
+      </div>
+      <div class="roadmap-step">
+        <div class="roadmap-q">Q3-Q4 2027</div>
+        <div class="roadmap-title">Series A-klaar</div>
+        <div class="roadmap-detail">10+ klanten, €1M+ ARR, 5+ gesloten deals, 2 banken-partnerships. Series A van €3-7M voor uitbreiding naar NL/DE/FR.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. ASK / FUNDS -->
+  <section>
+    <div class="section-num">09 · Ask</div>
+    <h2>€750k seed-ronde voor 16% equity. 18 maanden runway tot Series A.</h2>
+
+    <h3>Gebruik van de middelen</h3>
+    <div class="funds-grid">
+      <div class="funds-row"><span class="funds-desc">Founder-salaris 18 maanden</span><span class="funds-pct">€135k · 18%</span></div>
+      <div class="funds-row"><span class="funds-desc">1 senior developer (FE + AI integratie)</span><span class="funds-pct">€180k · 24%</span></div>
+      <div class="funds-row"><span class="funds-desc">1 commercial / sales hire</span><span class="funds-pct">€135k · 18%</span></div>
+      <div class="funds-row"><span class="funds-desc">Cloud, Claude API, infrastructure</span><span class="funds-pct">€45k · 6%</span></div>
+      <div class="funds-row"><span class="funds-desc">Odoo-integratie app development</span><span class="funds-pct">€90k · 12%</span></div>
+      <div class="funds-row"><span class="funds-desc">Juridisch, BV-structuur, banken-contracten</span><span class="funds-pct">€60k · 8%</span></div>
+      <div class="funds-row"><span class="funds-desc">Marketing, events, sales travel</span><span class="funds-pct">€45k · 6%</span></div>
+      <div class="funds-row"><span class="funds-desc">Reserve / buffer</span><span class="funds-pct">€60k · 8%</span></div>
+    </div>
+
+    <h3>Doel-investeerders</h3>
+    <p><strong>Lead investor (€300-500k):</strong> imec.istart, Hummingbird Ventures, PMV/VLAIO of single angel met logistics-sector ervaring. <strong>Volgers (€50-150k per ticket):</strong> family office, alumni van Katoen Natie of Mainfreight-relaties, transport-sector angels.</p>
+    <p><strong>Niet in deze ronde:</strong> Smartfin (€5M+ tickets), Fortino Capital (vereist €5M+ omzet). Beide pas relevant voor Series A in Q4 2027.</p>
+
+    <h3>Valuatie-onderbouwing</h3>
+    <p>€4M pre-money is gebaseerd op: <strong>(1)</strong> sterk founder-profiel met zeldzame domein-combinatie, <strong>(2)</strong> warm intro Mainfreight als 80-truck anchor klant, <strong>(3)</strong> bewezen AI-werking (deze conversatie is product-demo), <strong>(4)</strong> drielagig business model met asymmetrische moats, <strong>(5)</strong> regulatoire tailwind (tolverhoging aug 2026, AFIR, EU-subsidies). Realistisch voor pre-revenue seed in Belgische ecosystem.</p>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta">
+    <div class="cta-label">Volgende stap</div>
+    <div class="cta-headline">15-min intake call om te zien of dit past in jouw thesis. Daarna technical demo van de Mainfreight 80-truck case.</div>
+
+    <div class="cta-grid">
+      <div>
+        <div class="cta-stat-label">Investerings-ticket</div>
+        <div class="cta-stat-value">€50-500k</div>
+      </div>
+      <div>
+        <div class="cta-stat-label">Runway tot Series A</div>
+        <div class="cta-stat-value">18 maanden</div>
+      </div>
+      <div>
+        <div class="cta-stat-label">Eerste betalende klant</div>
+        <div class="cta-stat-value">Q3 2026</div>
+      </div>
+    </div>
+
+    <div class="cta-contact">
+      <strong>Contact:</strong> [naam] · [e-mail] · [telefoon] · [LinkedIn]<br>
+      <strong>Demo:</strong> 80-truck Mainfreight TCO-analyse beschikbaar op aanvraag — gegenereerd door FleetForge platform.
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
